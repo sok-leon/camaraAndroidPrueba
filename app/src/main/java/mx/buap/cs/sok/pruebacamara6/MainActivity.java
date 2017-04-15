@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         nombre = (TextView)findViewById(R.id.nombre);
-        mm = (TextView)findViewById(R.id.tama);
         camaraContenedor = (ImageView)findViewById(R.id.fotoContenedor);
     }
 
@@ -101,5 +100,5 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
-    
+
 }
