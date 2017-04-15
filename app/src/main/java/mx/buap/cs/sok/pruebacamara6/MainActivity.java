@@ -2,6 +2,7 @@ package mx.buap.cs.sok.pruebacamara6;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,7 +23,9 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     ImageView camaraContenedor;
-    TextView   nombre;
+    TextView   nombre, mm;
+    String mCurrentPhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +36,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+
             }
         });
 
-
+        nombre = (TextView)findViewById(R.id.nombre);
+        mm = (TextView)findViewById(R.id.tama);
         camaraContenedor = (ImageView)findViewById(R.id.fotoContenedor);
     }
 
@@ -62,17 +67,28 @@ public class MainActivity extends AppCompatActivity {
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+
+
+
             }
         }
     }
 
 
-    String mCurrentPhotoPath;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+            camaraContenedor.setImageBitmap(bitmap);
+        }
+    }
+
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "f_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -85,5 +101,5 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
-
+    
 }
